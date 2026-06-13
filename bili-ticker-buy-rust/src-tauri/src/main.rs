@@ -22,7 +22,7 @@ use uuid::Uuid;
 
 
 struct AppState {
-    tasks: Mutex<HashMap<String, Arc<AtomicBool>>>,
+    tasks: Arc<Mutex<HashMap<String, Arc<AtomicBool>>>>,
 }
 
 fn get_app_dir(app_handle: &tauri::AppHandle) -> PathBuf {
@@ -396,7 +396,7 @@ fn stop_task(state: tauri::State<'_, AppState>, task_id: String) -> Result<(), S
 fn main() {
     tauri::Builder::default()
         .manage(AppState {
-            tasks: Mutex::new(HashMap::new()),
+            tasks: Arc::new(Mutex::new(HashMap::new())),
         })
         .invoke_handler(tauri::generate_handler![
             greet, 
