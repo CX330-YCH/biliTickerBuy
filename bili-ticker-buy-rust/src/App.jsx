@@ -1345,13 +1345,13 @@ function App() {
     const TabButton = ({ id, icon: Icon, label }) => (
         <button
             onClick={() => setActiveTab(id)}
-            className={`flex items-center gap-2 p-3 w-full rounded-lg transition-colors ${activeTab === id
-                ? "bg-blue-600 text-white"
-                : "text-gray-400 hover:bg-gray-800 hover:text-white"
+            className={`flex items-center gap-3 p-3 w-full rounded-lg transition-all duration-200 ${activeTab === id
+                ? "bg-blue-600/20 text-blue-400 border-l-2 border-blue-400 pl-2.5"
+                : "text-gray-400 hover:bg-gray-800/80 hover:text-gray-200 border-l-2 border-transparent"
                 }`}
         >
-            <Icon size={20} />
-            <span className="font-medium">{label}</span>
+            <Icon size={18} className={activeTab === id ? "text-blue-400" : ""} />
+            <span className={`font-medium text-sm ${activeTab === id ? "font-semibold" : ""}`}>{label}</span>
         </button>
     );
 
@@ -1434,9 +1434,9 @@ function App() {
     return (
         <div className="flex h-screen bg-gray-900 text-white overflow-hidden">
             {/* Sidebar */}
-            <div className="w-64 bg-gray-950 p-4 flex flex-col border-r border-gray-800">
+            <div className="w-64 bg-gradient-to-b from-gray-950 via-gray-950 to-gray-900 p-4 flex flex-col border-r border-gray-800/80">
                 <div className="flex items-center gap-2 mb-8 px-2">
-                    <img src={logo} alt="Logo" className="w-8 h-8 rounded-lg" />
+                    <img src={logo} alt="Logo" className="w-8 h-8 rounded-lg shadow-lg shadow-blue-500/20" />
                     <h1 className="text-xl font-bold">B站抢票助手</h1>
                 </div>
 
@@ -1482,9 +1482,9 @@ function App() {
                     <TabButton id="about" icon={Bell} label="关于" />
                 </nav>
 
-                <div className="mt-auto pt-4 border-t border-gray-800">
-                    <div className="text-xs text-gray-500 text-center">
-                        
+                <div className="mt-auto pt-4 border-t border-gray-800/50">
+                    <div className="text-xs text-gray-600 text-center">
+                        v{appVersion || "..."}
                     </div>
                 </div>
             </div>
@@ -1492,7 +1492,7 @@ function App() {
             {/* Main Content */}
             <div className="flex-1 flex flex-col overflow-hidden relative">
                 {/* Header */}
-                <header className="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6">
+                <header className="h-16 bg-gradient-to-r from-gray-900 via-gray-900 to-gray-800 border-b border-gray-800/80 flex items-center justify-between px-6 shadow-sm">
                     <h2 className="text-lg font-semibold capitalize">
                         {activeTab === "run" && "仪表盘"}
                         {activeTab === "tasks" && "任务列表"}
@@ -1521,10 +1521,10 @@ function App() {
 
                     {/* DASHBOARD TAB */}
                     {activeTab === "run" && (
-                        <div className="max-w-5xl mx-auto space-y-8">
+                        <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
                             {/* Status Cards */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-6 shadow-lg text-white relative overflow-hidden">
+                                <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-6 shadow-lg text-white relative overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
                                     <div className="relative z-10">
                                         <div className="text-blue-200 text-sm font-bold mb-1">当前账号</div>
                                         <div className="text-2xl font-bold mb-2 truncate">{userInfo ? userInfo.uname : "未登录"}</div>
@@ -1540,7 +1540,7 @@ function App() {
                                     <User className="absolute right-4 bottom-4 text-white/10 w-24 h-24" />
                                 </div>
 
-                                <div className="bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-700 relative overflow-hidden">
+                                <div className="bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-700 relative overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
                                     <div className="relative z-10">
                                         <div className="text-gray-400 text-sm font-bold mb-1">系统状态</div>
                                         <div className="text-2xl font-bold mb-2 font-mono">{now.toLocaleTimeString()}</div>
@@ -1552,7 +1552,7 @@ function App() {
                                     <Clock className="absolute right-4 bottom-4 text-gray-700 w-24 h-24" />
                                 </div>
 
-                                <div className="bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-700 relative overflow-hidden">
+                                <div className="bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-700 relative overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
                                     <div className="relative z-10">
                                         <div className="text-gray-400 text-sm font-bold mb-1">运行中任务</div>
                                         <div className="text-2xl font-bold mb-2">{tasks.filter(t => t.status === 'running' || t.status === 'scheduled').length}</div>
@@ -1649,7 +1649,7 @@ function App() {
 
                     {/* TASKS TAB */}
                     {activeTab === "tasks" && (
-                        <div className={viewMode === "grid" ? "h-full flex flex-col" : "max-w-6xl mx-auto space-y-6"}>
+                        <div className={`animate-fade-in ${viewMode === "grid" ? "h-full flex flex-col" : "max-w-6xl mx-auto space-y-6"}`}>
                             <div className={`flex items-center justify-between ${viewMode === "grid" ? "px-4 pt-4 mb-2" : "mb-6"}`}>
                                 <h3 className="text-xl font-bold flex items-center gap-2">
                                     <List className="text-blue-400" />
@@ -1698,7 +1698,7 @@ function App() {
                                     </div>
                                 )}
                                 {tasks.map(task => (
-                                    <div key={task.id} className={`bg-gray-800 rounded-xl border border-gray-700 shadow-lg flex flex-col ${viewMode === "grid" ? "h-[500px]" : "p-6"}`}>
+                                    <div key={task.id} className={`bg-gray-800 rounded-xl border shadow-lg flex flex-col transition-all duration-300 hover:border-gray-600 hover:shadow-xl ${task.status === 'running' ? 'border-green-500/40 shadow-green-500/5' : 'border-gray-700'} ${viewMode === "grid" ? "h-[500px]" : "p-6"}`}>
                                         <div className={viewMode === "grid" ? "p-3 border-b border-gray-700 bg-gray-900/50" : "flex items-start justify-between mb-4"}>
                                             <div className="flex items-center justify-between w-full">
                                                 <div className="flex items-center gap-3 overflow-hidden">
@@ -1818,7 +1818,7 @@ function App() {
                     {/* CONFIG TAB */}
                     {
                         activeTab === "config" && (
-                            <div className="w-full max-w-[95%] mx-auto bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
+                            <div className="animate-fade-in w-full max-w-[95%] mx-auto bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-xl font-bold flex items-center gap-2">
                                         <FileJson className="text-blue-400" />
@@ -2385,7 +2385,7 @@ function App() {
                     {/* HISTORY TAB */}
                     {
                         activeTab === "history" && (
-                            <div className="max-w-5xl mx-auto bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700">
+                            <div className="animate-fade-in max-w-5xl mx-auto bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-xl font-bold flex items-center gap-2">
                                         <History className="text-green-400" />
@@ -2446,7 +2446,7 @@ function App() {
 
                     {/* SETTINGS TAB */}
                     {activeTab === "settings" && (
-                        <div className="max-w-4xl mx-auto bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700">
+                        <div className="animate-fade-in max-w-4xl mx-auto bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700">
                             <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
                                 <Settings className="text-blue-400" />
                                 高级设置
@@ -2603,7 +2603,7 @@ function App() {
                     {/* LOGIN TAB (Account Management) */}
                     {
                         activeTab === "login" && (
-                            <div className="max-w-4xl mx-auto">
+                            <div className="animate-fade-in max-w-4xl mx-auto">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-2xl font-bold">账号管理</h3>
                                     <div className="flex gap-2">
@@ -2698,7 +2698,7 @@ function App() {
                     {/* ABOUT TAB */}
                     {
                         activeTab === "about" && (
-                            <div className="max-w-3xl mx-auto">
+                            <div className="animate-fade-in max-w-3xl mx-auto">
                                 <div className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 text-center">
                                     <img src={logo} alt="Logo" className="w-20 h-20 rounded-2xl mx-auto mb-6 shadow-lg shadow-blue-500/20" />
                                     <h2 className="text-3xl font-bold mb-2">B站抢票助手</h2>
